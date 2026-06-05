@@ -1,5 +1,9 @@
-{
-  "scripts": {"dev":"vite", "build":"vite build", "preview":"vite preview"},
-  "dependencies": {"@vitejs/plugin-react":"latest", "vite":"latest", "react":"latest", "react-dom":"latest", "lucide-react":"latest", "recharts":"latest"},
-  "devDependencies": {}
-}
+# NeuroKids Dashboard
+
+Dashboard terapéutico para niños neurodiversos.
+
+## Instalación
+
+```bash
+npm install
+npm run dev

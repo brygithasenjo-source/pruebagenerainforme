@@ -3,18 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeuroKids Informe</title>
+  <title>NeuroKids Informe Integrado</title>
   <style>
     *{box-sizing:border-box}
     :root{
       --ink:#201933;--muted:#665a7c;--purple:#6d28d9;--blue:#2563eb;--lilac:#ede9fe;
-      --soft:#f8f7ff;--card:rgba(255,255,255,.88);--line:#ded5f5;--good:#16a34a;--warn:#f59e0b;--bad:#ef4444;
+      --soft:#f8f7ff;--card:rgba(255,255,255,.90);--line:#ded5f5;--good:#16a34a;--warn:#f59e0b;--bad:#ef4444;
+      --shadow:0 24px 80px rgba(73,49,130,.12);
     }
     body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at top left,rgba(124,58,237,.17),transparent 32%),radial-gradient(circle at bottom right,rgba(37,99,235,.14),transparent 35%),#f8f7ff;color:var(--ink)}
     button,input,textarea,select{font-family:inherit}
     button{cursor:pointer}
     .app{min-height:100vh}
-    .topbar{height:74px;display:flex;align-items:center;justify-content:space-between;padding:14px 26px;background:rgba(255,255,255,.7);backdrop-filter:blur(14px);border-bottom:1px solid rgba(109,40,217,.13);position:sticky;top:0;z-index:10}
+    .topbar{min-height:74px;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px 26px;background:rgba(255,255,255,.78);backdrop-filter:blur(14px);border-bottom:1px solid rgba(109,40,217,.13);position:sticky;top:0;z-index:10}
     .brand{display:flex;align-items:center;gap:12px}
     .brand img{width:48px;height:48px;border-radius:16px;object-fit:contain;background:white;border:1px solid #eadfff}
     .brand h1{margin:0;font-size:19px;line-height:1}
@@ -23,34 +24,38 @@
     .stepDot{width:34px;height:34px;border-radius:999px;display:grid;place-items:center;background:#efeaff;color:#6d28d9;font-weight:900;font-size:13px;border:1px solid #ddd6fe}
     .stepDot.active{background:linear-gradient(135deg,var(--purple),var(--blue));color:white}
     .shell{max-width:1240px;margin:0 auto;padding:28px}
-    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;min-height:calc(100vh - 130px)}
-    .heroCard,.card{background:var(--card);border:1px solid rgba(91,65,156,.13);border-radius:30px;box-shadow:0 24px 80px rgba(73,49,130,.11)}
+    .screen{display:none}.screen.active{display:block}
+    .hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center;min-height:calc(100vh - 130px)}
+    .heroCard,.card{background:var(--card);border:1px solid rgba(91,65,156,.13);border-radius:30px;box-shadow:var(--shadow)}
     .heroCard{padding:42px}
     .tag{display:inline-flex;background:#ede9fe;color:#6d28d9;border:1px solid #ddd6fe;border-radius:999px;padding:9px 13px;font-size:12px;font-weight:900;margin-bottom:16px}
     h2{font-size:52px;line-height:.98;margin:0 0 16px;letter-spacing:-1.6px}
     .hero p{color:var(--muted);font-size:17px;line-height:1.55;max-width:760px}
     .heroVisual{padding:28px}
     .mockPage{background:white;border:1px solid #e8ddff;border-radius:24px;padding:18px;box-shadow:0 24px 50px rgba(32,25,51,.08)}
-    .mockHeader{height:78px;border-radius:18px;background:linear-gradient(135deg,#6d28d9,#2563eb);color:white;padding:16px;margin-bottom:14px}
+    .mockHeader{min-height:78px;border-radius:18px;background:linear-gradient(135deg,#6d28d9,#2563eb);color:white;padding:16px;margin-bottom:14px}
     .mockGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .mockBox{min-height:86px;border-radius:18px;background:#f7f3ff;border:1px solid #eee7ff;padding:12px}
-    .primary,.secondary{border:0;border-radius:18px;padding:15px 20px;font-weight:950;font-size:15px}
+    .primary,.secondary,.ghost{border:0;border-radius:18px;padding:15px 20px;font-weight:950;font-size:15px}
     .primary{background:linear-gradient(135deg,var(--purple),var(--blue));color:white;box-shadow:0 16px 35px rgba(109,40,217,.22)}
     .secondary{background:white;color:#4c1d95;border:1px solid #ddd6fe}
+    .ghost{background:#f3edff;color:#4c1d95;border:1px solid #ddd6fe}
     .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-    .screen{display:none}.screen.active{display:block}
     .screenTitle{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:20px}
     .screenTitle h2{font-size:38px}.screenTitle p{color:var(--muted);margin:8px 0 0}
     .grid{display:grid;gap:18px}.grid.two{grid-template-columns:1fr 1fr}.grid.three{grid-template-columns:repeat(3,1fr)}
     .card{padding:22px}
     .therapy{position:relative;overflow:hidden;border:1px solid #e7dcff;transition:.2s;text-align:left;background:white}
     .therapy:hover{transform:translateY(-3px);box-shadow:0 20px 55px rgba(73,49,130,.14)}
+    .therapy.selected{outline:4px solid rgba(109,40,217,.18);border-color:#7c3aed}
     .therapyIcon{font-size:38px}.therapy h3{font-size:22px;margin:10px 0 8px}.therapy p{color:var(--muted);line-height:1.45}.therapy .pill{display:inline-flex;margin-top:10px;background:#f3edff;color:#5b21b6;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:900}
     label{display:flex;flex-direction:column;gap:7px;margin-bottom:14px}
     label span{font-size:13px;font-weight:900;color:#5b5170}
     input,textarea,select{width:100%;border:1px solid var(--line);background:white;border-radius:15px;padding:12px 13px;outline:none;color:var(--ink)}
     textarea{min-height:88px;resize:vertical}
     input:focus,textarea:focus,select:focus{border-color:#7c3aed;box-shadow:0 0 0 4px rgba(124,58,237,.11)}
+    .sectionBlock{background:#faf8ff;border:1px solid #eee7ff;border-radius:24px;padding:16px;margin-bottom:18px}
+    .sectionBlock h3{margin:0 0 12px;color:#4c1d95}
     .question{padding:16px;border-radius:20px;background:white;border:1px solid #e9ddff}
     .questionTop{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:12px}
     .questionTop strong{font-size:15px}.questionTop small{color:var(--muted);font-weight:900;background:#f3edff;border-radius:999px;padding:5px 8px;white-space:nowrap}
@@ -58,33 +63,50 @@
     .scale button{border:1px solid #ddd6fe;background:#fff;border-radius:13px;padding:10px 8px;font-weight:900;color:#4c1d95}
     .scale button.active{background:#6d28d9;color:white;border-color:#6d28d9}
     .hint{font-size:12px;color:var(--muted);margin-top:9px}
-    .objectiveCard{border:1px solid #e9ddff;border-radius:20px;padding:16px;background:white;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start}
+    .objectiveSection{border:1px solid #e9ddff;border-radius:24px;padding:16px;background:#faf8ff;margin-bottom:16px}
+    .objectiveSection h3{margin:0 0 12px;color:#4c1d95}
+    .objectiveCard{border:1px solid #e9ddff;border-radius:20px;padding:14px;background:white;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;margin-bottom:10px}
     .objectiveCard input{width:18px;height:18px;margin-top:3px}
     .objectiveCard h4{margin:0 0 7px}.objectiveCard p{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
     .statRow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
     .stat{background:#f8f5ff;border:1px solid #eee7ff;border-radius:20px;padding:15px}
     .stat span{font-size:12px;color:var(--muted);font-weight:900}.stat strong{display:block;font-size:24px;margin-top:4px}
-    .printWrap{background:#e9e5f5;border-radius:28px;padding:20px}
+    .therapyProgress{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+    .progressPill{border:1px solid #ddd6fe;background:white;color:#4c1d95;border-radius:999px;padding:8px 11px;font-size:12px;font-weight:900}
+    .progressPill.done{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+    .progressPill.current{background:#6d28d9;color:white}
+    .printWrap{background:#e9e5f5;border-radius:28px;padding:20px;overflow-x:auto}
     .a4{width:794px;min-height:1123px;background:white;margin:0 auto;color:#201933;box-shadow:0 22px 70px rgba(20,10,60,.18);padding:0;overflow:hidden}
     .reportCover{background:linear-gradient(135deg,#4c1d95,#2563eb);color:white;padding:28px 34px;display:flex;justify-content:space-between;gap:18px;align-items:center}
     .reportCover img{width:74px;height:74px;object-fit:contain;border-radius:18px;background:white;padding:8px}
     .reportCover h1{margin:0;font-size:27px}.reportCover p{margin:6px 0 0;color:#eee7ff}
     .reportBody{padding:28px 34px}
-    .reportSection{border:1px solid #e8ddff;border-radius:20px;padding:16px;margin-bottom:14px}
+    .reportSection{border:1px solid #e8ddff;border-radius:20px;padding:16px;margin-bottom:14px;break-inside:avoid}
     .reportSection h3{margin:0 0 10px;color:#4c1d95;font-size:18px}
-    .reportTable{width:100%;border-collapse:collapse;font-size:13px}
-    .reportTable th,.reportTable td{border:1px solid #e8ddff;padding:9px;text-align:left;vertical-align:top}
+    .reportTable{width:100%;border-collapse:collapse;font-size:12.5px}
+    .reportTable th,.reportTable td{border:1px solid #e8ddff;padding:8px;text-align:left;vertical-align:top}
     .reportTable th{background:#f3edff;color:#4c1d95}
+    .donutGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:12px}
+    .donutCard{background:#fff;border:1px solid #eee7ff;border-radius:18px;padding:12px;text-align:center}
+    .donut{width:92px;height:92px;margin:0 auto;border-radius:50%;background:conic-gradient(var(--c) calc(var(--p)*1%),#eee7ff 0);display:grid;place-items:center;position:relative}
+    .donut:before{content:"";width:62px;height:62px;background:white;border-radius:50%;position:absolute}
+    .donut span{position:relative;z-index:2;font-weight:950;color:#201933;font-size:14px}
+    .donutCard p{margin:8px 0 0;color:#5b5170;font-size:11px;font-weight:900;line-height:1.25}
+    .miniCharts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     .bars{display:grid;gap:9px}
-    .barLine{display:grid;grid-template-columns:150px 1fr 45px;gap:10px;align-items:center;font-size:13px}
+    .barLine{display:grid;grid-template-columns:150px 1fr 55px;gap:10px;align-items:center;font-size:12.5px}
     .track{height:11px;background:#eee7ff;border-radius:999px;overflow:hidden}.fill{height:100%;border-radius:999px;background:linear-gradient(90deg,#7c3aed,#2563eb)}
     .notice{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:18px;padding:12px;font-size:12px;line-height:1.45;margin-top:12px}
     .footerReport{font-size:11px;color:#6b5d80;text-align:center;padding:12px 30px;border-top:1px solid #eee7ff}
-    .hiddenPrint{display:flex}
     @media print{
-      body{background:white}.topbar,.shell>.screen:not(#screenReport),.noPrint{display:none!important}.shell{padding:0;max-width:none}.screen{display:block!important}.printWrap{padding:0;background:white}.a4{box-shadow:none;width:210mm;min-height:297mm}.reportCover{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      body{background:white}.topbar,.shell>.screen:not(#screenReport),.noPrint{display:none!important}.shell{padding:0;max-width:none}.screen{display:block!important}.printWrap{padding:0;background:white;border-radius:0;overflow:visible}.a4{box-shadow:none;width:210mm;min-height:297mm}.reportCover{-webkit-print-color-adjust:exact;print-color-adjust:exact}.donut{print-color-adjust:exact;-webkit-print-color-adjust:exact}
     }
-    @media(max-width:950px){.hero,.grid.two,.grid.three,.statRow{grid-template-columns:1fr}.steps{display:none}.screenTitle{display:block}h2,.screenTitle h2{font-size:32px}.a4{width:100%}.barLine{grid-template-columns:1fr}.topbar{height:auto}}
+    @media(max-width:950px){
+      .hero,.grid.two,.grid.three,.statRow{grid-template-columns:1fr}.steps{display:none}.screenTitle{display:block}h2,.screenTitle h2{font-size:32px}.topbar{height:auto;padding:12px 16px}.shell{padding:18px}.heroCard{padding:28px}.printWrap{padding:0;background:transparent;border-radius:0;overflow-x:hidden}.a4{width:100%;min-height:auto;box-shadow:none;border-radius:22px}.reportCover{padding:22px;align-items:flex-start}.reportCover h1{font-size:22px}.reportBody{padding:18px}.donutGrid{grid-template-columns:1fr 1fr}.miniCharts{grid-template-columns:1fr}.barLine{grid-template-columns:1fr;gap:6px}.reportTable{font-size:11.5px}.reportTable th,.reportTable td{padding:7px}
+    }
+    @media(max-width:520px){
+      .scale{gap:6px}.scale button{padding:9px 5px}.actions{flex-direction:column}.actions button{width:100%}.mockGrid{grid-template-columns:1fr}.donut{width:82px;height:82px}.donut:before{width:56px;height:56px}.donutGrid{gap:8px}.reportCover{flex-direction:column}.reportCover img{width:64px;height:64px}.reportSection{padding:12px}.card{border-radius:22px;padding:16px}
+    }
   </style>
 </head>
 <body>
@@ -92,7 +114,7 @@
     <div class="topbar">
       <div class="brand">
         <img src="https://res.cloudinary.com/duubcmn0b/image/upload/v1779323207/ia-psicologos-logos.png_qtcoal.png" alt="Logo IA para psicólogos">
-        <div><h1>NeuroKids Informe</h1><p>IA para psicólogos · Generador A4</p></div>
+        <div><h1>NeuroKids Informe</h1><p>IA para psicólogos · Informe integrado A4</p></div>
       </div>
       <div class="steps" id="steps"></div>
     </div>
@@ -102,16 +124,16 @@
         <div class="hero">
           <div class="heroCard">
             <span class="tag">Generador de informes</span>
-            <h2>Informes didácticos para niños neurodiversos</h2>
-            <p>Completa un flujo guiado por terapia, responde preguntas clínicas funcionales, selecciona objetivos sugeridos y genera un informe A4 visual, ordenado y listo para imprimir.</p>
+            <h2>Informe integrado para niños neurodiversos</h2>
+            <p>Evalúa varias áreas terapéuticas, revisa gráficos circulares, selecciona objetivos por secciones y genera un informe didáctico A4 para imprimir o guardar en PDF.</p>
             <div class="actions"><button class="primary" onclick="goTo(1)">Comenzar informe</button></div>
           </div>
           <div class="heroVisual">
             <div class="mockPage">
-              <div class="mockHeader"><b>Informe terapéutico</b><br><small>Objetivos · Estadísticas · Recomendaciones</small></div>
+              <div class="mockHeader"><b>Informe integrado</b><br><small>Evaluación inicial · Reevaluación · Objetivos · Gráficos</small></div>
               <div class="mockGrid">
-                <div class="mockBox"><b>📊 Avance</b><br><small>Indicadores visuales</small></div>
-                <div class="mockBox"><b>🎯 Objetivos</b><br><small>Ruta por niveles</small></div>
+                <div class="mockBox"><b>⭕ Gráficos</b><br><small>Por cada terapia</small></div>
+                <div class="mockBox"><b>🎯 Objetivos</b><br><small>Agrupados por secciones</small></div>
                 <div class="mockBox"><b>🏠 Casa</b><br><small>Recomendaciones</small></div>
                 <div class="mockBox"><b>🏫 Colegio</b><br><small>Adaptaciones</small></div>
               </div>
@@ -120,51 +142,80 @@
         </div>
       </section>
 
-      <section class="screen" id="screenTherapy">
-        <div class="screenTitle"><div><span class="tag">Paso 1</span><h2>Elige el tipo de terapia</h2><p>Selecciona el área que quieres evaluar para generar el formulario adecuado.</p></div></div>
-        <div class="grid three" id="therapyGrid"></div>
-        <div class="actions"><button class="secondary" onclick="goTo(0)">Volver</button></div>
+      <section class="screen" id="screenSetup">
+        <div class="screenTitle">
+          <div><span class="tag">Paso 1</span><h2>Tipo de informe y áreas</h2><p>Selecciona si será evaluación inicial o reevaluación, y marca las terapias que deseas integrar.</p></div>
+        </div>
+        <div class="grid two">
+          <div class="card">
+            <label><span>Tipo de informe</span>
+              <select id="reportType">
+                <option value="Evaluación inicial">Evaluación inicial</option>
+                <option value="Reevaluación">Reevaluación</option>
+                <option value="Informe de evolución">Informe de evolución</option>
+                <option value="Informe integrado">Informe integrado</option>
+              </select>
+            </label>
+            <label><span>Fecha del informe</span><input id="pDate" type="date"></label>
+            <label><span>Modalidad</span>
+              <select id="reportMode">
+                <option value="Informe integrado multidisciplinario">Informe integrado multidisciplinario</option>
+                <option value="Informe por área terapéutica">Informe por área terapéutica</option>
+              </select>
+            </label>
+            <p style="color:var(--muted);line-height:1.5;margin-bottom:0">Para una primera evaluación, lo ideal es seleccionar todas las áreas que el niño haya pasado en el consultorio.</p>
+          </div>
+          <div class="card">
+            <h3 style="margin-top:0;color:#4c1d95">Áreas a evaluar</h3>
+            <div class="grid" id="therapyChecklist"></div>
+          </div>
+        </div>
+        <div class="actions"><button class="secondary" onclick="goTo(0)">Volver</button><button class="primary" onclick="startPatient()">Continuar</button></div>
       </section>
 
       <section class="screen" id="screenPatient">
-        <div class="screenTitle"><div><span class="tag">Paso 2</span><h2>Datos del paciente</h2><p>Estos datos aparecerán en el informe final.</p></div></div>
+        <div class="screenTitle"><div><span class="tag">Paso 2</span><h2>Datos del paciente</h2><p>Estos datos aparecerán en el informe final integrado.</p></div></div>
         <div class="card">
           <div class="grid two">
             <label><span>Nombre o código del niño</span><input id="pName" value="Niño/a 01"></label>
             <label><span>Edad</span><input id="pAge" value="6 años"></label>
             <label><span>Grado escolar</span><input id="pGrade" value="Inicial"></label>
-            <label><span>Fecha del informe</span><input id="pDate" type="date"></label>
             <label><span>Profesional responsable</span><input id="pProfessional" placeholder="Nombre del profesional"></label>
             <label><span>Centro / consultorio</span><input id="pCenter" placeholder="Nombre del consultorio"></label>
+            <label><span>Informante principal</span><input id="pInformant" placeholder="Madre, padre, cuidador, docente, etc."></label>
           </div>
           <label><span>Motivo de consulta</span><textarea id="pReason">Dificultades de regulación, comunicación y adaptación al contexto escolar.</textarea></label>
           <label><span>Fortalezas observadas</span><textarea id="pStrengths">Buena respuesta a apoyos visuales, interés por actividades estructuradas y disposición progresiva al vínculo terapéutico.</textarea></label>
           <label><span>Necesidades principales de apoyo</span><textarea id="pNeeds">Requiere apoyo en regulación, comunicación funcional, tolerancia a cambios y seguimiento de instrucciones.</textarea></label>
         </div>
-        <div class="actions"><button class="secondary" onclick="goTo(1)">Volver</button><button class="primary" onclick="goTo(3)">Continuar</button></div>
+        <div class="actions"><button class="secondary" onclick="goTo(1)">Volver</button><button class="primary" onclick="goToQuestions()">Continuar evaluación</button></div>
       </section>
 
       <section class="screen" id="screenQuestions">
-        <div class="screenTitle"><div><span class="tag">Paso 3</span><h2 id="questionTitle">Formulario terapéutico</h2><p>Responde 20 preguntas. La escala va de 0 a 4 según el nivel observado.</p></div></div>
-        <div class="grid two" id="questionsGrid"></div>
-        <div class="actions"><button class="secondary" onclick="goTo(2)">Volver</button><button class="primary" onclick="prepareObjectives()">Ver objetivos recomendados</button></div>
+        <div class="screenTitle">
+          <div><span class="tag" id="therapyStepTag">Paso 3</span><h2 id="questionTitle">Formulario terapéutico</h2><p>Responde 20 preguntas por área. La escala va de 0 a 4 según el nivel observado.</p></div>
+        </div>
+        <div class="therapyProgress" id="therapyProgress"></div>
+        <div id="questionsGrid"></div>
+        <div class="actions"><button class="secondary" onclick="goTo(2)">Volver a datos</button><button class="primary" onclick="prepareObjectives()">Ver objetivos recomendados</button></div>
       </section>
 
       <section class="screen" id="screenObjectives">
-        <div class="screenTitle"><div><span class="tag">Paso 4</span><h2>Objetivos recomendados</h2><p>Selecciona varios objetivos para el programa terapéutico.</p></div></div>
+        <div class="screenTitle"><div><span class="tag">Paso 4</span><h2 id="objectiveTitle">Objetivos recomendados</h2><p>Selecciona varios objetivos. Están agrupados por secciones para que el informe sea más ordenado.</p></div></div>
+        <div class="therapyProgress" id="therapyProgressObj"></div>
         <div class="statRow">
           <div class="stat"><span>Promedio del área</span><strong id="avgScore">0%</strong></div>
           <div class="stat"><span>Nivel estimado</span><strong id="levelName">-</strong></div>
-          <div class="stat"><span>Área seleccionada</span><strong id="selectedTherapyName">-</strong></div>
+          <div class="stat"><span>Área actual</span><strong id="selectedTherapyName">-</strong></div>
           <div class="stat"><span>Objetivos elegidos</span><strong id="selectedCount">0</strong></div>
         </div>
-        <div class="grid two" id="objectivesGrid"></div>
-        <div class="actions"><button class="secondary" onclick="goTo(3)">Volver</button><button class="primary" onclick="buildReport()">Generar informe A4</button></div>
+        <div id="objectivesGrid"></div>
+        <div class="actions"><button class="secondary" onclick="goTo(3)">Volver a preguntas</button><button class="primary" id="nextTherapyBtn" onclick="saveObjectivesAndContinue()">Guardar y continuar</button></div>
       </section>
 
       <section class="screen" id="screenReport">
-        <div class="screenTitle noPrint"><div><span class="tag">Paso 5</span><h2>Informe A4 didáctico</h2><p>Puedes imprimirlo o guardarlo como PDF desde el navegador.</p></div></div>
-        <div class="actions noPrint"><button class="secondary" onclick="goTo(4)">Volver</button><button class="primary" onclick="window.print()">Imprimir / Guardar PDF</button></div>
+        <div class="screenTitle noPrint"><div><span class="tag">Paso 5</span><h2>Informe A4 integrado</h2><p>Puedes imprimirlo o guardarlo como PDF desde el navegador.</p></div></div>
+        <div class="actions noPrint"><button class="secondary" onclick="goTo(4)">Volver</button><button class="ghost" onclick="goTo(1)">Crear nuevo</button><button class="primary" onclick="window.print()">Imprimir / Guardar PDF</button></div>
         <div class="printWrap"><div class="a4" id="reportA4"></div></div>
       </section>
     </div>
@@ -175,61 +226,261 @@ const logoUrl = "https://res.cloudinary.com/duubcmn0b/image/upload/v1779323207/i
 const LEVELS = ["Línea base","Inicial","Básico","Intermedio","Avanzado"];
 const therapies = {
  conducta:{icon:"🧩",name:"Modificación de conducta",desc:"Conductas, regulación, límites, crisis, instrucciones y hábitos adaptativos.",color:"#7c3aed",
- qs:["Identifica detonantes de la conducta","Tolera límites simples","Sigue instrucciones de un paso","Permanece en una actividad estructurada","Espera turnos","Tolera cambios pequeños","Comunica necesidad de ayuda o pausa","Reduce intensidad de crisis con apoyo","Acepta redirección del adulto","Usa conducta alternativa","Mantiene rutina visual","Tolera negación de acceso","Disminuye conductas de escape","Reconoce señales de malestar","Acepta transición entre actividades","Responde a refuerzo positivo","Cumple acuerdos simples","Usa estrategia de calma con guía","Generaliza conducta adaptativa en casa","Generaliza conducta adaptativa en colegio"],
- obj:["Identificar detonantes y función probable de la conducta objetivo.","Reducir la intensidad de la conducta mediante apoyos preventivos.","Incrementar el seguimiento de instrucciones simples con apoyo visual.","Entrenar una conducta alternativa para pedir ayuda, pausa o cambio.","Aumentar tolerancia a la espera y a la frustración progresivamente.","Implementar un plan de refuerzo positivo en casa y colegio.","Fortalecer estrategias de regulación con acompañamiento del adulto.","Generalizar conductas adaptativas en diferentes contextos."]
- },
+ sections:[
+  {title:"Regulación conductual",qs:["Identifica detonantes de la conducta","Tolera límites simples","Reduce intensidad de crisis con apoyo","Reconoce señales de malestar"]},
+  {title:"Seguimiento de instrucciones",qs:["Sigue instrucciones de un paso","Permanece en una actividad estructurada","Acepta redirección del adulto","Cumple acuerdos simples"]},
+  {title:"Tolerancia y transiciones",qs:["Espera turnos","Tolera cambios pequeños","Tolera negación de acceso","Acepta transición entre actividades"]},
+  {title:"Conducta alternativa",qs:["Comunica necesidad de ayuda o pausa","Usa conducta alternativa","Usa estrategia de calma con guía","Responde a refuerzo positivo"]},
+  {title:"Generalización",qs:["Mantiene rutina visual","Disminuye conductas de escape","Generaliza conducta adaptativa en casa","Generaliza conducta adaptativa en colegio"]}
+ ],
+ objectives:[
+  {section:"Regulación conductual",items:["Identificar detonantes y función probable de la conducta objetivo.","Reducir la intensidad de la conducta mediante apoyos preventivos.","Fortalecer estrategias de regulación con acompañamiento del adulto."]},
+  {section:"Seguimiento de instrucciones",items:["Incrementar el seguimiento de instrucciones simples con apoyo visual.","Permanecer en actividades estructuradas por periodos progresivamente mayores.","Responder a límites simples con apoyo del adulto."]},
+  {section:"Conducta alternativa",items:["Entrenar una conducta alternativa para pedir ayuda, pausa o cambio.","Comunicar rechazo o malestar de forma funcional.","Implementar un plan de refuerzo positivo en casa y colegio."]},
+  {section:"Generalización",items:["Aumentar tolerancia a la espera y a la frustración progresivamente.","Generalizar conductas adaptativas en diferentes contextos.","Coordinar estrategias comunes entre familia, colegio y terapeutas."]}
+ ]},
  lenguaje:{icon:"💬",name:"Terapia de lenguaje",desc:"Comunicación funcional, comprensión, expresión, turnos y lenguaje social.",color:"#2563eb",
- qs:["Responde al nombre","Mantiene atención conjunta","Imita gestos","Imita sonidos o palabras","Señala para pedir","Usa pictogramas o apoyos","Expresa necesidades básicas","Comprende instrucciones de un paso","Comprende instrucciones de dos pasos","Aumenta vocabulario funcional","Solicita ayuda","Solicita descanso","Usa frases cortas","Nombra emociones básicas","Responde preguntas simples","Inicia comunicación espontánea","Participa en turnos comunicativos","Mantiene intercambio breve","Usa lenguaje social","Generaliza comunicación en casa/colegio"],
- obj:["Favorecer la comunicación funcional mediante gestos, señalamiento, pictogramas o palabra.","Incrementar la comprensión de instrucciones simples y funcionales.","Aumentar vocabulario relacionado con necesidades, objetos, acciones y emociones.","Promover solicitudes funcionales como ayuda, descanso, más, no quiero o espera.","Fortalecer frases cortas para expresar necesidades y preferencias.","Entrenar turnos comunicativos en actividades estructuradas.","Ampliar el uso del lenguaje social en interacciones cotidianas.","Generalizar habilidades comunicativas en casa, colegio y sesión."]
- },
+ sections:[
+  {title:"Atención e intención comunicativa",qs:["Responde al nombre","Mantiene atención conjunta","Inicia comunicación espontánea","Señala para pedir"]},
+  {title:"Imitación y comunicación inicial",qs:["Imita gestos","Imita sonidos o palabras","Usa pictogramas o apoyos","Expresa necesidades básicas"]},
+  {title:"Comprensión",qs:["Comprende instrucciones de un paso","Comprende instrucciones de dos pasos","Responde preguntas simples","Solicita ayuda"]},
+  {title:"Expresión funcional",qs:["Aumenta vocabulario funcional","Solicita descanso","Usa frases cortas","Nombra emociones básicas"]},
+  {title:"Lenguaje social",qs:["Participa en turnos comunicativos","Mantiene intercambio breve","Usa lenguaje social","Generaliza comunicación en casa/colegio"]}
+ ],
+ objectives:[
+  {section:"Comunicación funcional",items:["Favorecer la comunicación funcional mediante gestos, señalamiento, pictogramas o palabra.","Promover solicitudes funcionales como ayuda, descanso, más, no quiero o espera.","Fortalecer frases cortas para expresar necesidades y preferencias."]},
+  {section:"Comprensión del lenguaje",items:["Incrementar la comprensión de instrucciones simples y funcionales.","Aumentar vocabulario relacionado con necesidades, objetos, acciones y emociones.","Mejorar respuesta al nombre y atención conjunta durante rutinas."]},
+  {section:"Interacción social",items:["Entrenar turnos comunicativos en actividades estructuradas.","Ampliar el uso del lenguaje social en interacciones cotidianas.","Generalizar habilidades comunicativas en casa, colegio y sesión."]}
+ ]},
  cognitiva:{icon:"🧠",name:"Terapia cognitiva",desc:"Atención, memoria, flexibilidad, planificación, emociones y solución de problemas.",color:"#0891b2",
- qs:["Mantiene atención breve","Responde a consignas simples","Sostiene atención conjunta","Clasifica por color","Clasifica por forma o tamaño","Sigue secuencias simples","Reconoce emociones básicas","Relaciona causa y consecuencia","Tolera errores pequeños","Acepta cambios en la tarea","Resuelve problemas simples con apoyo","Recuerda instrucciones breves","Organiza pasos de una actividad","Controla impulsos con guía","Espera antes de responder","Usa apoyo visual para planificar","Finaliza tareas estructuradas","Aplica estrategias ante frustración","Transfiere aprendizaje a casa","Transfiere aprendizaje al colegio"],
- obj:["Aumentar el tiempo de atención sostenida en tareas estructuradas.","Fortalecer seguimiento de consignas simples y secuenciales.","Trabajar clasificación, asociación y causa-consecuencia mediante actividades lúdicas.","Favorecer reconocimiento emocional y comprensión de situaciones cotidianas.","Entrenar flexibilidad cognitiva ante cambios pequeños.","Fortalecer tolerancia al error y estrategias de solución de problemas.","Promover planificación de pasos para completar una actividad.","Generalizar habilidades cognitivas a contextos escolares y familiares."]
- },
+ sections:[
+  {title:"Atención y respuesta",qs:["Mantiene atención breve","Responde a consignas simples","Sostiene atención conjunta","Recuerda instrucciones breves"]},
+  {title:"Clasificación y asociación",qs:["Clasifica por color","Clasifica por forma o tamaño","Relaciona causa y consecuencia","Sigue secuencias simples"]},
+  {title:"Flexibilidad",qs:["Tolera errores pequeños","Acepta cambios en la tarea","Resuelve problemas simples con apoyo","Espera antes de responder"]},
+  {title:"Funciones ejecutivas",qs:["Organiza pasos de una actividad","Controla impulsos con guía","Usa apoyo visual para planificar","Finaliza tareas estructuradas"]},
+  {title:"Generalización",qs:["Reconoce emociones básicas","Aplica estrategias ante frustración","Transfiere aprendizaje a casa","Transfiere aprendizaje al colegio"]}
+ ],
+ objectives:[
+  {section:"Atención y aprendizaje",items:["Aumentar el tiempo de atención sostenida en tareas estructuradas.","Fortalecer seguimiento de consignas simples y secuenciales.","Trabajar clasificación, asociación y causa-consecuencia mediante actividades lúdicas."]},
+  {section:"Flexibilidad cognitiva",items:["Entrenar flexibilidad cognitiva ante cambios pequeños.","Fortalecer tolerancia al error y estrategias de solución de problemas.","Promover espera, control inhibitorio y respuesta guiada."]},
+  {section:"Funciones ejecutivas",items:["Promover planificación de pasos para completar una actividad.","Favorecer reconocimiento emocional y comprensión de situaciones cotidianas.","Generalizar habilidades cognitivas a contextos escolares y familiares."]}
+ ]},
  ocupacional:{icon:"✋",name:"Terapia ocupacional",desc:"Sensorial, motricidad fina, autonomía, juego, alimentación, vestido e higiene.",color:"#db2777",
- qs:["Tolera sonidos cotidianos","Tolera texturas","Tolera movimiento","Explora materiales nuevos","Participa en juego funcional","Usa pinza","Manipula objetos pequeños","Coordina ojo-mano","Realiza trazos o actividades finas","Sigue rutina visual","Participa en alimentación","Tolera higiene básica","Colabora en vestido","Regula búsqueda sensorial","Acepta pausas sensoriales","Mantiene postura en mesa","Completa actividad fina breve","Aumenta independencia en rutina","Generaliza autonomía en casa","Generaliza autonomía en colegio"],
- obj:["Identificar el perfil sensorial y los estímulos que facilitan o dificultan la participación.","Incrementar tolerancia gradual a texturas, sonidos o movimiento según necesidad.","Fortalecer motricidad fina, pinza y coordinación óculo-manual.","Promover juego funcional y participación en actividades estructuradas.","Aumentar autonomía en rutinas de alimentación, vestido e higiene.","Implementar apoyos visuales para secuencias de autocuidado.","Entrenar estrategias sensoriales de regulación adaptadas al niño.","Generalizar independencia funcional en casa y colegio."]
- },
+ sections:[
+  {title:"Perfil sensorial",qs:["Tolera sonidos cotidianos","Tolera texturas","Tolera movimiento","Acepta pausas sensoriales"]},
+  {title:"Exploración y juego",qs:["Explora materiales nuevos","Participa en juego funcional","Regula búsqueda sensorial","Mantiene postura en mesa"]},
+  {title:"Motricidad fina",qs:["Usa pinza","Manipula objetos pequeños","Coordina ojo-mano","Realiza trazos o actividades finas"]},
+  {title:"Autonomía",qs:["Sigue rutina visual","Participa en alimentación","Tolera higiene básica","Colabora en vestido"]},
+  {title:"Generalización funcional",qs:["Completa actividad fina breve","Aumenta independencia en rutina","Generaliza autonomía en casa","Generaliza autonomía en colegio"]}
+ ],
+ objectives:[
+  {section:"Regulación sensorial",items:["Identificar el perfil sensorial y los estímulos que facilitan o dificultan la participación.","Incrementar tolerancia gradual a texturas, sonidos o movimiento según necesidad.","Entrenar estrategias sensoriales de regulación adaptadas al niño."]},
+  {section:"Motricidad fina y juego",items:["Fortalecer motricidad fina, pinza y coordinación óculo-manual.","Promover juego funcional y participación en actividades estructuradas.","Adaptar materiales para mejorar participación y permanencia en tarea."]},
+  {section:"Autonomía",items:["Aumentar autonomía en rutinas de alimentación, vestido e higiene.","Implementar apoyos visuales para secuencias de autocuidado.","Generalizar independencia funcional en casa y colegio."]}
+ ]},
  fisica:{icon:"🏃",name:"Terapia física",desc:"Postura, equilibrio, coordinación, fuerza, marcha, desplazamiento y motricidad gruesa.",color:"#ea580c",
- qs:["Mantiene control postural básico","Tolera cambios de posición","Mantiene equilibrio con apoyo","Mantiene equilibrio sin apoyo breve","Realiza marcha funcional","Sube superficies bajas","Baja superficies bajas","Coordina ambos lados del cuerpo","Lanza o recibe objetos","Salta con apoyo","Corre con coordinación básica","Realiza circuito motor simple","Aumenta fuerza funcional","Aumenta resistencia","Reconoce esquema corporal","Sigue secuencias motoras","Participa en juego motor","Evita menos actividades físicas","Generaliza habilidades en colegio","Generaliza habilidades en espacios recreativos"],
- obj:["Mejorar control postural en actividades funcionales.","Fortalecer equilibrio estático y dinámico mediante juegos motores.","Incrementar coordinación bilateral en actividades lúdicas.","Mejorar fuerza y resistencia funcional de manera progresiva.","Promover desplazamientos seguros en diferentes superficies.","Entrenar secuencias motoras simples y circuitos adaptados.","Favorecer participación en juegos motores grupales.","Generalizar habilidades motoras en casa, colegio y espacios recreativos."]
- }
+ sections:[
+  {title:"Control postural",qs:["Mantiene control postural básico","Tolera cambios de posición","Reconoce esquema corporal","Mantiene postura durante actividad"]},
+  {title:"Equilibrio y desplazamiento",qs:["Mantiene equilibrio con apoyo","Mantiene equilibrio sin apoyo breve","Realiza marcha funcional","Evita menos actividades físicas"]},
+  {title:"Coordinación",qs:["Coordina ambos lados del cuerpo","Lanza o recibe objetos","Sigue secuencias motoras","Realiza circuito motor simple"]},
+  {title:"Fuerza y resistencia",qs:["Sube superficies bajas","Baja superficies bajas","Aumenta fuerza funcional","Aumenta resistencia"]},
+  {title:"Participación motora",qs:["Salta con apoyo","Corre con coordinación básica","Participa en juego motor","Generaliza habilidades en colegio y espacios recreativos"]}
+ ],
+ objectives:[
+  {section:"Control y equilibrio",items:["Mejorar control postural en actividades funcionales.","Fortalecer equilibrio estático y dinámico mediante juegos motores.","Promover desplazamientos seguros en diferentes superficies."]},
+  {section:"Coordinación motora",items:["Incrementar coordinación bilateral en actividades lúdicas.","Entrenar secuencias motoras simples y circuitos adaptados.","Favorecer participación en juegos motores grupales."]},
+  {section:"Fuerza y generalización",items:["Mejorar fuerza y resistencia funcional de manera progresiva.","Reducir evitación de actividades físicas mediante apoyo gradual.","Generalizar habilidades motoras en casa, colegio y espacios recreativos."]}
+ ]}
 };
-let step=0, selected="conducta", answers={}, chosenObjectives=[];
+
+let step=0;
+let selectedTherapies=["conducta","lenguaje","cognitiva","ocupacional","fisica"];
+let currentIndex=0;
+let evaluations={};
 const $=id=>document.getElementById(id);
-function setDefaultDate(){const d=new Date().toISOString().slice(0,10); if($("pDate")) $("pDate").value=d}
-function goTo(n){step=n;document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));["screenHome","screenTherapy","screenPatient","screenQuestions","screenObjectives","screenReport"].forEach((id,i)=>{if(i===n)$(id).classList.add("active")});renderSteps();window.scrollTo(0,0)}
-function renderSteps(){const box=$("steps");box.innerHTML="";["Inicio","Área","Datos","Preguntas","Objetivos","Informe"].forEach((_,i)=>{const d=document.createElement("div");d.className=i===step?"stepDot active":"stepDot";d.innerText=i+1;box.appendChild(d)})}
-function renderTherapies(){const grid=$("therapyGrid");grid.innerHTML="";Object.entries(therapies).forEach(([key,t])=>{const c=document.createElement("button");c.className="card therapy";c.innerHTML=`<div class="therapyIcon">${t.icon}</div><h3>${t.name}</h3><p>${t.desc}</p><span class="pill">20 preguntas + objetivos</span>`;c.onclick=()=>{selected=key;answers={};chosenObjectives=[];renderQuestions();goTo(2)};grid.appendChild(c)})}
-function renderQuestions(){const t=therapies[selected];$("questionTitle").innerText=`Formulario: ${t.icon} ${t.name}`;const grid=$("questionsGrid");grid.innerHTML="";t.qs.forEach((q,i)=>{if(answers[i]===undefined)answers[i]=0;const div=document.createElement("div");div.className="question";div.innerHTML=`<div class="questionTop"><strong>${i+1}. ${q}</strong><small>0 a 4</small></div><div class="scale">${[0,1,2,3,4].map(v=>`<button class="${answers[i]===v?'active':''}" onclick="setAnswer(${i},${v})">${v}</button>`).join("")}</div><div class="hint">0 ausente · 1 con apoyo alto · 2 con apoyo moderado · 3 con poco apoyo · 4 independiente/generalizado</div>`;grid.appendChild(div)})}
-function setAnswer(i,v){answers[i]=v;renderQuestions()}
-function getAverage(){const vals=Object.values(answers); if(!vals.length)return 0; return vals.reduce((a,b)=>a+Number(b),0)/(vals.length*4)}
-function levelFromAverage(avg){if(avg<.2)return 0;if(avg<.45)return 1;if(avg<.68)return 2;if(avg<.86)return 3;return 4}
-function prepareObjectives(){const avg=getAverage();const lvl=levelFromAverage(avg);const t=therapies[selected];$("avgScore").innerText=Math.round(avg*100)+"%";$("levelName").innerText=LEVELS[lvl];$("selectedTherapyName").innerText=t.name;$("selectedCount").innerText=chosenObjectives.length;const grid=$("objectivesGrid");grid.innerHTML="";t.obj.forEach((o,i)=>{const div=document.createElement("label");div.className="objectiveCard";div.innerHTML=`<input type="checkbox" ${chosenObjectives.includes(i)?"checked":""} onchange="toggleObjective(${i})"><div><h4>Objetivo ${i+1}</h4><p>${o}</p></div>`;grid.appendChild(div)});goTo(4)}
-function toggleObjective(i){chosenObjectives.includes(i)?chosenObjectives=chosenObjectives.filter(x=>x!==i):chosenObjectives.push(i);$("selectedCount").innerText=chosenObjectives.length}
 function value(id){return $(id)?.value || "No especificado"}
-function buildReport(){
- const t=therapies[selected], avg=getAverage(), lvl=levelFromAverage(avg), percent=Math.round(avg*100);
- const selectedObjs=chosenObjectives.length?chosenObjectives.map(i=>t.obj[i]):t.obj.slice(0,4);
- const rows=t.qs.map((q,i)=>({q,score:answers[i]||0}));
- const topStrengths=rows.filter(r=>r.score>=3).slice(0,5);
- const needs=rows.filter(r=>r.score<=1).slice(0,5);
- const report=`<div class="reportCover"><div><h1>Informe terapéutico didáctico</h1><p>${t.icon} ${t.name} · ${value("pName")} · ${value("pDate")}</p></div><img src="${logoUrl}" alt="Logo"></div>
- <div class="reportBody">
- <div class="reportSection"><h3>1. Datos generales</h3><table class="reportTable"><tr><th>Paciente</th><td>${value("pName")}</td><th>Edad</th><td>${value("pAge")}</td></tr><tr><th>Grado</th><td>${value("pGrade")}</td><th>Profesional</th><td>${value("pProfessional")}</td></tr><tr><th>Centro</th><td>${value("pCenter")}</td><th>Área</th><td>${t.name}</td></tr></table></div>
- <div class="reportSection"><h3>2. Motivo y perfil funcional</h3><p><b>Motivo de consulta:</b> ${value("pReason")}</p><p><b>Fortalezas:</b> ${value("pStrengths")}</p><p><b>Necesidades de apoyo:</b> ${value("pNeeds")}</p></div>
- <div class="reportSection"><h3>3. Resumen visual del área</h3><div class="bars"><div class="barLine"><b>Avance global</b><div class="track"><div class="fill" style="width:${percent}%"></div></div><b>${percent}%</b></div><div class="barLine"><b>Nivel estimado</b><div class="track"><div class="fill" style="width:${(lvl+1)*20}%"></div></div><b>${LEVELS[lvl]}</b></div></div><p style="margin-bottom:0;color:#665a7c">Escala: 0 ausente · 1 apoyo alto · 2 apoyo moderado · 3 poco apoyo · 4 independiente/generalizado.</p></div>
- <div class="reportSection"><h3>4. Indicadores evaluados</h3><table class="reportTable"><tr><th>Indicador</th><th>Puntaje</th><th>Interpretación</th></tr>${rows.map(r=>`<tr><td>${r.q}</td><td>${r.score}/4</td><td>${interpret(r.score)}</td></tr>`).join("")}</table></div>
- <div class="reportSection"><h3>5. Fortalezas y necesidades detectadas</h3><table class="reportTable"><tr><th>Fortalezas observadas</th><th>Necesidades prioritarias</th></tr><tr><td>${topStrengths.length?topStrengths.map(x=>"• "+x.q).join("<br>"):"Aún requiere mayor observación."}</td><td>${needs.length?needs.map(x=>"• "+x.q).join("<br>"):"No se registran necesidades severas en esta área."}</td></tr></table></div>
- <div class="reportSection"><h3>6. Objetivos seleccionados para el programa</h3><table class="reportTable"><tr><th>#</th><th>Objetivo terapéutico</th><th>Indicador de logro</th></tr>${selectedObjs.map((o,i)=>`<tr><td>${i+1}</td><td>${o}</td><td>Se observará progreso mediante reducción de apoyos, mayor frecuencia de respuesta y generalización en contextos naturales.</td></tr>`).join("")}</table></div>
- <div class="reportSection"><h3>7. Recomendaciones prácticas</h3><table class="reportTable"><tr><th>Para casa</th><th>Para colegio</th></tr><tr><td>${homeRec(selected)}</td><td>${schoolRec(selected)}</td></tr></table><div class="notice"><b>Nota ética:</b> Este documento es un borrador de apoyo elaborado con la información registrada por el profesional. Debe ser revisado, editado y validado antes de entregarse. No reemplaza evaluación clínica, diagnóstico ni juicio profesional.</div></div>
- </div><div class="footerReport">IA para psicólogos · NeuroKids Informe · Formato A4 imprimible</div>`;
- $("reportA4").innerHTML=report;goTo(5)
+function setDefaultDate(){const d=new Date().toISOString().slice(0,10); if($("pDate")) $("pDate").value=d}
+function goTo(n){step=n;document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));["screenHome","screenSetup","screenPatient","screenQuestions","screenObjectives","screenReport"].forEach((id,i)=>{if(i===n)$(id).classList.add("active")});renderSteps();window.scrollTo(0,0)}
+function renderSteps(){const box=$("steps");box.innerHTML="";["Inicio","Config","Datos","Preguntas","Objetivos","Informe"].forEach((_,i)=>{const d=document.createElement("div");d.className=i===step?"stepDot active":"stepDot";d.innerText=i+1;box.appendChild(d)})}
+function renderTherapyChecklist(){
+ const grid=$("therapyChecklist");grid.innerHTML="";
+ Object.entries(therapies).forEach(([key,t])=>{
+  const checked=selectedTherapies.includes(key);
+  const c=document.createElement("button");
+  c.type="button";
+  c.className=checked?"card therapy selected":"card therapy";
+  c.innerHTML=`<div class="therapyIcon">${t.icon}</div><h3>${t.name}</h3><p>${t.desc}</p><span class="pill">${checked?"Seleccionada":"Click para seleccionar"}</span>`;
+  c.onclick=()=>{selectedTherapies=checked?selectedTherapies.filter(x=>x!==key):[...selectedTherapies,key];renderTherapyChecklist()};
+  grid.appendChild(c)
+ })
+}
+function startPatient(){
+ if(selectedTherapies.length===0){alert("Selecciona al menos una terapia para evaluar.");return}
+ selectedTherapies.forEach(k=>{if(!evaluations[k]) evaluations[k]={answers:{},objectives:[]}});
+ goTo(2)
+}
+function goToQuestions(){currentIndex=0;renderQuestions();goTo(3)}
+function currentKey(){return selectedTherapies[currentIndex]}
+function getQuestions(k){return therapies[k].sections.flatMap(sec=>sec.qs.map(q=>({section:sec.title,q})))}
+function renderTherapyProgress(targetId="therapyProgress"){
+ const box=$(targetId); if(!box)return; box.innerHTML="";
+ selectedTherapies.forEach((k,i)=>{
+  const pill=document.createElement("div");
+  const done=!!evaluations[k]?.completed;
+  pill.className=i===currentIndex?"progressPill current":done?"progressPill done":"progressPill";
+  pill.innerText=`${i+1}. ${therapies[k].icon} ${therapies[k].name}`;
+  box.appendChild(pill);
+ })
+}
+function renderQuestions(){
+ const k=currentKey(), t=therapies[k], ev=evaluations[k] || {answers:{},objectives:[]};
+ $("questionTitle").innerText=`${t.icon} ${t.name}`;
+ $("therapyStepTag").innerText=`Área ${currentIndex+1} de ${selectedTherapies.length}`;
+ const grid=$("questionsGrid");grid.innerHTML="";
+ let globalIndex=0;
+ t.sections.forEach(section=>{
+  const sectionDiv=document.createElement("div");
+  sectionDiv.className="sectionBlock";
+  sectionDiv.innerHTML=`<h3>${section.title}</h3><div class="grid two"></div>`;
+  const inner=sectionDiv.querySelector(".grid");
+  section.qs.forEach(q=>{
+    const i=globalIndex++;
+    if(ev.answers[i]===undefined)ev.answers[i]=0;
+    const div=document.createElement("div");
+    div.className="question";
+    div.innerHTML=`<div class="questionTop"><strong>${i+1}. ${q}</strong><small>0 a 4</small></div><div class="scale">${[0,1,2,3,4].map(v=>`<button type="button" class="${Number(ev.answers[i])===v?'active':''}" onclick="setAnswer(${i},${v})">${v}</button>`).join("")}</div><div class="hint">0 ausente · 1 apoyo alto · 2 apoyo moderado · 3 poco apoyo · 4 independiente/generalizado</div>`;
+    inner.appendChild(div);
+  });
+  grid.appendChild(sectionDiv);
+ });
+ evaluations[k]=ev;
+ renderTherapyProgress("therapyProgress");
+}
+function setAnswer(i,v){const k=currentKey(); evaluations[k].answers[i]=v; renderQuestions()}
+function getAverage(k){const vals=Object.values(evaluations[k]?.answers || {}); if(!vals.length)return 0; return vals.reduce((a,b)=>a+Number(b),0)/(vals.length*4)}
+function levelFromAverage(avg){if(avg<.2)return 0;if(avg<.45)return 1;if(avg<.68)return 2;if(avg<.86)return 3;return 4}
+function sectionScores(k){
+ const t=therapies[k], ev=evaluations[k] || {answers:{}};
+ let index=0;
+ return t.sections.map(sec=>{
+  const scores=sec.qs.map(()=>Number(ev.answers[index++] || 0));
+  const avg=scores.reduce((a,b)=>a+b,0)/(scores.length*4);
+  return {section:sec.title, percent:Math.round(avg*100), level:LEVELS[levelFromAverage(avg)]}
+ })
+}
+function prepareObjectives(){
+ const k=currentKey(), avg=getAverage(k), lvl=levelFromAverage(avg), t=therapies[k];
+ $("avgScore").innerText=Math.round(avg*100)+"%";
+ $("levelName").innerText=LEVELS[lvl];
+ $("selectedTherapyName").innerText=t.name;
+ $("objectiveTitle").innerText=`Objetivos recomendados · ${t.icon} ${t.name}`;
+ $("selectedCount").innerText=(evaluations[k]?.objectives || []).length;
+ const grid=$("objectivesGrid");grid.innerHTML="";
+ t.objectives.forEach(group=>{
+  const section=document.createElement("div");
+  section.className="objectiveSection";
+  section.innerHTML=`<h3>${group.section}</h3>`;
+  group.items.forEach(obj=>{
+    const checked=(evaluations[k]?.objectives || []).some(o=>o.text===obj);
+    const label=document.createElement("label");
+    label.className="objectiveCard";
+    label.innerHTML=`<input type="checkbox" ${checked?"checked":""} onchange="toggleObjective('${k}','${encodeURIComponent(group.section)}','${encodeURIComponent(obj)}')"><div><h4>${group.section}</h4><p>${obj}</p></div>`;
+    section.appendChild(label);
+  });
+  grid.appendChild(section);
+ });
+ renderTherapyProgress("therapyProgressObj");
+ $("nextTherapyBtn").innerText=currentIndex<selectedTherapies.length-1?"Guardar y evaluar siguiente área":"Generar informe integrado";
+ goTo(4)
+}
+function toggleObjective(k, sectionEncoded, objEncoded){
+ const section=decodeURIComponent(sectionEncoded), text=decodeURIComponent(objEncoded);
+ const ev=evaluations[k]; const exists=ev.objectives.some(o=>o.text===text);
+ ev.objectives=exists?ev.objectives.filter(o=>o.text!==text):[...ev.objectives,{section,text}];
+ $("selectedCount").innerText=ev.objectives.length;
+}
+function saveObjectivesAndContinue(){
+ const k=currentKey(); evaluations[k].completed=true;
+ if(currentIndex<selectedTherapies.length-1){currentIndex++;renderQuestions();goTo(3)}
+ else{buildIntegratedReport()}
 }
 function interpret(s){return ["Habilidad ausente o no observada","Requiere apoyo alto","Requiere apoyo moderado","Logro parcial con poco apoyo","Independiente o generalizado"][Number(s)]}
-function homeRec(k){return {conducta:"Mantener rutinas visuales, anticipar cambios, reforzar conductas alternativas y usar instrucciones breves.",lenguaje:"Crear oportunidades para pedir ayuda, elegir entre opciones, usar apoyos visuales y reforzar todo intento comunicativo.",cognitiva:"Usar juegos de clasificación, secuencias visuales, tareas breves y refuerzo ante intentos de solución.",ocupacional:"Aplicar rutinas visuales de autocuidado, ofrecer pausas sensoriales y practicar motricidad fina con actividades cotidianas.",fisica:"Realizar circuitos motores seguros, juegos de equilibrio y actividades de coordinación ajustadas al nivel del niño."}[k]}
-function schoolRec(k){return {conducta:"Anticipar transiciones, usar normas visuales, reforzar seguimiento de instrucciones y registrar detonantes.",lenguaje:"Usar instrucciones claras, apoyos visuales, tiempo de espera y oportunidades de comunicación funcional.",cognitiva:"Dividir tareas en pasos, ofrecer modelos visuales, permitir pausas y reforzar finalización de actividades.",ocupacional:"Adaptar materiales, reducir estímulos distractores, permitir pausas sensoriales y apoyar rutinas de autonomía.",fisica:"Ajustar actividades físicas, ofrecer apoyo gradual y promover participación en juegos motores sin sobreexigencia."}[k]}
-renderSteps();renderTherapies();renderQuestions();setDefaultDate();
+function donut(label, percent, color, icon){
+ return `<div class="donutCard"><div class="donut" style="--p:${percent};--c:${color}"><span>${percent}%</span></div><p>${icon} ${label}</p></div>`
+}
+function therapyRows(){
+ return selectedTherapies.map(k=>{
+  const t=therapies[k], p=Math.round(getAverage(k)*100), lvl=LEVELS[levelFromAverage(getAverage(k))];
+  const low=lowestNeeds(k).slice(0,2).map(x=>x.q).join("<br>• ");
+  return `<tr><td><b>${t.icon} ${t.name}</b></td><td>${p}%</td><td>${lvl}</td><td>${low? "• "+low:"Sin necesidades prioritarias marcadas"}</td></tr>`;
+ }).join("")
+}
+function rowsForTherapy(k){
+ const qs=getQuestions(k), ev=evaluations[k] || {answers:{}};
+ return qs.map((item,i)=>({section:item.section,q:item.q,score:Number(ev.answers[i] || 0)}))
+}
+function topStrengths(k){return rowsForTherapy(k).filter(r=>r.score>=3).slice(0,5)}
+function lowestNeeds(k){return rowsForTherapy(k).filter(r=>r.score<=1).slice(0,5)}
+function objectivesHtml(k){
+ let objs=evaluations[k]?.objectives || [];
+ if(!objs.length){
+  objs=therapies[k].objectives.flatMap(g=>g.items.slice(0,1).map(text=>({section:g.section,text}))).slice(0,4);
+ }
+ const grouped={};
+ objs.forEach(o=>{if(!grouped[o.section])grouped[o.section]=[]; grouped[o.section].push(o.text)});
+ return Object.entries(grouped).map(([section,items])=>`<tr><th>${section}</th><td>${items.map(x=>"• "+x).join("<br>")}</td><td>Se observará progreso mediante reducción de apoyos, mayor frecuencia de respuesta y generalización en contextos naturales.</td></tr>`).join("")
+}
+function areaBlocks(){
+ return selectedTherapies.map(k=>{
+  const t=therapies[k], p=Math.round(getAverage(k)*100), lvl=LEVELS[levelFromAverage(getAverage(k))];
+  const secRows=sectionScores(k).map(s=>`<div class="barLine"><b>${s.section}</b><div class="track"><div class="fill" style="width:${s.percent}%;background:${t.color}"></div></div><b>${s.percent}%</b></div>`).join("");
+  const strengths=topStrengths(k).map(x=>"• "+x.q).join("<br>") || "Aún requiere mayor observación en esta área.";
+  const needs=lowestNeeds(k).map(x=>"• "+x.q).join("<br>") || "No se registran necesidades severas en esta área.";
+  return `<div class="reportSection">
+    <h3>${t.icon} ${t.name}</h3>
+    <div class="miniCharts">
+      <div><b>Resultado general:</b> ${p}% · ${lvl}<div class="bars" style="margin-top:10px">${secRows}</div></div>
+      <div><table class="reportTable"><tr><th>Fortalezas observadas</th></tr><tr><td>${strengths}</td></tr><tr><th>Necesidades prioritarias</th></tr><tr><td>${needs}</td></tr></table></div>
+    </div>
+    <h3 style="margin-top:14px;font-size:16px">Objetivos seleccionados</h3>
+    <table class="reportTable"><tr><th>Sección</th><th>Objetivo terapéutico</th><th>Indicador de logro</th></tr>${objectivesHtml(k)}</table>
+  </div>`
+ }).join("")
+}
+function generalRecommendations(){
+ return `<table class="reportTable">
+  <tr><th>Para casa</th><th>Para colegio</th><th>Para el programa terapéutico</th></tr>
+  <tr>
+    <td>• Mantener rutinas visuales y anticipar cambios.<br>• Reforzar intentos de comunicación funcional.<br>• Practicar objetivos en actividades breves y cotidianas.<br>• Registrar detonantes, avances y apoyos que funcionen.</td>
+    <td>• Usar instrucciones claras y concretas.<br>• Ofrecer apoyos visuales y tiempo de espera.<br>• Permitir pausas de regulación cuando sea necesario.<br>• Coordinar estrategias entre familia, docentes y terapeutas.</td>
+    <td>• Priorizar objetivos funcionales y medibles.<br>• Iniciar por habilidades con mayor impacto en autonomía y participación.<br>• Revisar avances cada 8 a 12 semanas.<br>• Ajustar apoyos según respuesta del niño.</td>
+  </tr>
+ </table>`
+}
+function buildIntegratedReport(){
+ const charts=selectedTherapies.map(k=>donut(therapies[k].name,Math.round(getAverage(k)*100),therapies[k].color,therapies[k].icon)).join("");
+ const report=`<div class="reportCover"><div><h1>${value("reportType")} · Informe integrado</h1><p>${value("pName")} · ${value("pDate")} · ${value("reportMode")}</p></div><img src="${logoUrl}" alt="Logo"></div>
+ <div class="reportBody">
+ <div class="reportSection"><h3>1. Datos generales</h3><table class="reportTable">
+ <tr><th>Paciente</th><td>${value("pName")}</td><th>Edad</th><td>${value("pAge")}</td></tr>
+ <tr><th>Grado</th><td>${value("pGrade")}</td><th>Tipo de informe</th><td>${value("reportType")}</td></tr>
+ <tr><th>Fecha</th><td>${value("pDate")}</td><th>Profesional</th><td>${value("pProfessional")}</td></tr>
+ <tr><th>Centro</th><td>${value("pCenter")}</td><th>Informante</th><td>${value("pInformant")}</td></tr>
+ </table></div>
+
+ <div class="reportSection"><h3>2. Motivo y perfil funcional</h3><p><b>Motivo de consulta:</b> ${value("pReason")}</p><p><b>Fortalezas generales:</b> ${value("pStrengths")}</p><p><b>Necesidades principales de apoyo:</b> ${value("pNeeds")}</p></div>
+
+ <div class="reportSection"><h3>3. Resumen visual integrado por áreas</h3><div class="donutGrid">${charts}</div><p style="margin-bottom:0;color:#665a7c;font-size:12px">Escala: 0 ausente · 1 apoyo alto · 2 apoyo moderado · 3 poco apoyo · 4 independiente/generalizado. Los porcentajes representan un estimado funcional basado en lo registrado por el profesional.</p></div>
+
+ <div class="reportSection"><h3>4. Tabla resumen multidisciplinaria</h3><table class="reportTable"><tr><th>Área</th><th>Resultado</th><th>Nivel estimado</th><th>Necesidades prioritarias</th></tr>${therapyRows()}</table></div>
+
+ <div class="reportSection"><h3>5. Perfil por áreas, objetivos y secciones</h3>${areaBlocks()}</div>
+
+ <div class="reportSection"><h3>6. Recomendaciones prácticas integradas</h3>${generalRecommendations()}<div class="notice"><b>Nota ética:</b> Este documento es un borrador de apoyo elaborado con la información registrada por el profesional. Debe ser revisado, editado y validado antes de entregarse. No reemplaza evaluación clínica, diagnóstico ni juicio profesional.</div></div>
+ </div><div class="footerReport">IA para psicólogos · NeuroKids Informe Integrado · Formato A4 imprimible</div>`;
+ $("reportA4").innerHTML=report;goTo(5)
+}
+renderSteps();renderTherapyChecklist();setDefaultDate();
 </script>
 </body>
 </html>

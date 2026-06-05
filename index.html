@@ -1,12 +1,1138 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>NeuroKids Dashboard</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuroKids Dashboard</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(124, 58, 237, 0.18), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.14), transparent 35%),
+        #f8f7ff;
+      color: #201933;
+    }
+
+    button, input, textarea, select {
+      font-family: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 310px;
+      background: linear-gradient(180deg, #21123f, #341d6d 55%, #162b62);
+      color: white;
+      padding: 28px 22px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .brandIcon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.16);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    .brand h1 {
+      font-size: 24px;
+      margin: 0;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      color: #d8ccff;
+    }
+
+    .sideText {
+      color: #e9e3ff;
+      line-height: 1.5;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .areaMenu {
+      display: grid;
+      gap: 10px;
+    }
+
+    .areaBtn {
+      width: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      padding: 13px 14px;
+      border-radius: 16px;
+      text-align: left;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .areaBtn:hover,
+    .areaBtn.active {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-1px);
+    }
+
+    .ethicBox {
+      margin-top: 24px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      padding: 15px;
+      border-radius: 18px;
+    }
+
+    .ethicBox p {
+      margin: 8px 0 0;
+      line-height: 1.45;
+      color: #efeaff;
+      font-size: 13px;
+    }
+
+    .content {
+      flex: 1;
+      padding: 28px;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      gap: 22px;
+      align-items: stretch;
+      margin-bottom: 22px;
+    }
+
+    .hero h2 {
+      font-size: 36px;
+      line-height: 1.05;
+      margin: 8px 0 10px;
+      max-width: 820px;
+    }
+
+    .hero p {
+      max-width: 800px;
+      color: #655b78;
+      line-height: 1.5;
+    }
+
+    .tag {
+      display: inline-flex;
+      background: #ede9fe;
+      color: #6d28d9;
+      border: 1px solid #ddd6fe;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .heroCard {
+      min-width: 260px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(91, 65, 156, 0.14);
+      border-radius: 26px;
+      padding: 22px;
+      box-shadow: 0 20px 70px rgba(73, 49, 130, 0.12);
+    }
+
+    .heroCard span {
+      color: #765d96;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .heroCard strong {
+      display: block;
+      margin-top: 10px;
+      font-size: 20px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(91, 65, 156, 0.12);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 22px 70px rgba(73, 49, 130, 0.1);
+    }
+
+    .cardHeader {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .cardHeader span {
+      font-size: 22px;
+    }
+
+    .cardHeader h3 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .formGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    .field span {
+      font-size: 13px;
+      font-weight: 800;
+      color: #5b5170;
+    }
+
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      border: 1px solid #ded5f5;
+      background: #fff;
+      border-radius: 15px;
+      padding: 12px 13px;
+      outline: none;
+      color: #201933;
+    }
+
+    .field textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.12);
+    }
+
+    .metric {
+      background: linear-gradient(135deg, #f3edff, #eef8ff);
+      border-radius: 20px;
+      padding: 18px;
+      margin-bottom: 15px;
+    }
+
+    .metric span {
+      color: #5b5170;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 25px;
+      margin-top: 4px;
+    }
+
+    .levelButtons {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .level {
+      border: 1px solid #ddd6fe;
+      background: #ffffff;
+      color: #3b2863;
+      border-radius: 14px;
+      padding: 12px;
+      cursor: pointer;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .level:hover,
+    .level.active {
+      background: #6d28d9;
+      color: white;
+    }
+
+    .progressBox {
+      margin: 16px 0;
+    }
+
+    .progressInfo,
+    .barTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .progressTrack,
+    .barTrack {
+      height: 12px;
+      background: #eee7ff;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progressFill,
+    .barFill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .barFill {
+      background: linear-gradient(90deg, #7c3aed, #2563eb);
+    }
+
+    .miniCharts {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .barItem span {
+      color: #5b5170;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .smallText {
+      color: #655b78;
+      margin-top: -5px;
+    }
+
+    .objectiveList {
+      display: grid;
+      gap: 12px;
+    }
+
+    .objective {
+      display: grid;
+      grid-template-columns: 38px 1fr;
+      gap: 12px;
+      align-items: start;
+      background: #f8f5ff;
+      border: 1px solid #eee7ff;
+      border-radius: 18px;
+      padding: 14px;
+    }
+
+    .objective span {
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      background: #6d28d9;
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .objective p {
+      margin: 0;
+      line-height: 1.45;
+      color: #362b49;
+    }
+
+    .primaryBtn {
+      width: 100%;
+      border: 0;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #7c3aed, #2563eb);
+      color: white;
+      padding: 15px 18px;
+      font-size: 15px;
+      font-weight: 900;
+      cursor: pointer;
+      margin-bottom: 14px;
+    }
+
+    .reportBox {
+      width: 100%;
+      min-height: 460px;
+      border: 1px solid #ded5f5;
+      border-radius: 20px;
+      padding: 18px;
+      line-height: 1.55;
+      color: #201933;
+      background: white;
+      resize: vertical;
+      white-space: pre-wrap;
+    }
+
+    .emptyReport {
+      background: #f8f5ff;
+      border: 1px dashed #c4b5fd;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      color: #6b5d80;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .actions button {
+      flex: 1;
+      border: 1px solid #ddd6fe;
+      background: white;
+      color: #4c1d95;
+      border-radius: 15px;
+      padding: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    @media (max-width: 1050px) {
+      .app {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .grid.two,
+      .formGrid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        flex-direction: column;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brandIcon">NK</div>
+        <div>
+          <h1>NeuroKids</h1>
+          <p>Clinical Dashboard</p>
+        </div>
+      </div>
+
+      <p class="sideText">
+        Formularios por área, objetivos progresivos e informes editables para niños neurodiversos.
+      </p>
+
+      <div class="areaMenu" id="areaMenu"></div>
+
+      <div class="ethicBox">
+        <strong>Nota ética</strong>
+        <p>
+          La IA no diagnostica ni reemplaza al profesional. Solo organiza información y genera borradores editables.
+        </p>
+      </div>
+    </aside>
+
+    <section class="content">
+      <header class="hero">
+        <div>
+          <span class="tag">IA para psicólogos</span>
+          <h2>Dashboard terapéutico para niños neurodiversos</h2>
+          <p>
+            Registra áreas, selecciona nivel de avance y genera informes profesionales editables para padres, colegio o seguimiento clínico.
+          </p>
+        </div>
+
+        <div class="heroCard">
+          <span>Área activa</span>
+          <strong id="activeAreaName"></strong>
+          <p id="activeLevelName"></p>
+        </div>
+      </header>
+
+      <section class="grid two">
+        <div class="card">
+          <div class="cardHeader">
+            <span>👦</span>
+            <h3>Perfil del niño</h3>
+          </div>
+
+          <div class="formGrid">
+            <label class="field">
+              <span>Nombre o código</span>
+              <input id="childName" value="Niño/a 01">
+            </label>
+
+            <label class="field">
+              <span>Edad</span>
+              <input id="childAge" value="6 años">
+            </label>
+
+            <label class="field">
+              <span>Grado escolar</span>
+              <input id="childGrade" value="Inicial">
+            </label>
+
+            <label class="field">
+              <span>Diagnóstico previo</span>
+              <input id="childDiagnosis" value="No especificado">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Motivo de consulta</span>
+            <textarea id="childReason">Dificultades de regulación, comunicación y adaptación escolar.</textarea>
+          </label>
+
+          <label class="field">
+            <span>Fortalezas</span>
+            <textarea id="childStrengths">Interés por juegos visuales, buena respuesta a rutinas anticipadas.</textarea>
+          </label>
+
+          <label class="field">
+            <span>Necesidades de apoyo</span>
+            <textarea id="childNeeds">Apoyo en comunicación funcional, regulación emocional y tolerancia a cambios.</textarea>
+          </label>
+        </div>
+
+        <div class="card">
+          <div class="cardHeader">
+            <span>📊</span>
+            <h3>Dashboard visual</h3>
+          </div>
+
+          <div class="metric">
+            <span>Nivel actual</span>
+            <strong id="currentLevelText"></strong>
+          </div>
+
+          <div class="levelButtons" id="levelButtons"></div>
+
+          <div class="progressBox">
+            <div class="progressInfo">
+              <span>Avance estimado</span>
+              <strong id="progressText"></strong>
+            </div>
+            <div class="progressTrack">
+              <div class="progressFill" id="progressFill"></div>
+            </div>
+          </div>
+
+          <div class="miniCharts">
+            <div class="barItem">
+              <div class="barTop">
+                <span>Participación</span>
+                <strong id="participationText">5/10</strong>
+              </div>
+              <div class="barTrack"><div class="barFill" id="participationBar" style="width:50%"></div></div>
+            </div>
+
+            <div class="barItem">
+              <div class="barTop">
+                <span>Regulación</span>
+                <strong id="regulationText">5/10</strong>
+              </div>
+              <div class="barTrack"><div class="barFill" id="regulationBar" style="width:50%"></div></div>
+            </div>
+
+            <div class="barItem">
+              <div class="barTop">
+                <span>Tolerancia</span>
+                <strong id="frustrationText">5/10</strong>
+              </div>
+              <div class="barTrack"><div class="barFill" id="frustrationBar" style="width:50%"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid two">
+        <div class="card">
+          <div class="cardHeader">
+            <span id="formAreaIcon">🧩</span>
+            <h3 id="formAreaTitle">Formulario</h3>
+          </div>
+
+          <div class="formGrid" id="areaForm"></div>
+        </div>
+
+        <div class="card">
+          <div class="cardHeader">
+            <span>🎯</span>
+            <h3>Objetivos progresivos sugeridos</h3>
+          </div>
+
+          <p class="smallText">Los objetivos cambian según el nivel seleccionado.</p>
+          <div class="objectiveList" id="objectiveList"></div>
+        </div>
+      </section>
+
+      <section class="grid two">
+        <div class="card">
+          <div class="cardHeader">
+            <span>📝</span>
+            <h3>Registro de sesión</h3>
+          </div>
+
+          <div class="formGrid">
+            <label class="field">
+              <span>Fecha</span>
+              <input id="sessionDate" type="date">
+            </label>
+
+            <label class="field">
+              <span>Objetivo de sesión</span>
+              <input id="sessionObjective" placeholder="Ej. tolerar espera con apoyo visual">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Actividades realizadas</span>
+            <textarea id="sessionActivities"></textarea>
+          </label>
+
+          <div class="formGrid">
+            <label class="field">
+              <span>Participación: <b id="participationLabel">5</b>/10</span>
+              <input id="participation" type="range" min="0" max="10" value="5">
+            </label>
+
+            <label class="field">
+              <span>Regulación: <b id="regulationLabel">5</b>/10</span>
+              <input id="regulation" type="range" min="0" max="10" value="5">
+            </label>
+
+            <label class="field">
+              <span>Tolerancia a la frustración: <b id="frustrationLabel">5</b>/10</span>
+              <input id="frustration" type="range" min="0" max="10" value="5">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Observaciones clínicas</span>
+            <textarea id="sessionObservations"></textarea>
+          </label>
+
+          <label class="field">
+            <span>Recomendaciones para casa</span>
+            <textarea id="sessionHome"></textarea>
+          </label>
+
+          <label class="field">
+            <span>Recomendaciones para colegio</span>
+            <textarea id="sessionSchool"></textarea>
+          </label>
+
+          <label class="field">
+            <span>Próximo objetivo</span>
+            <textarea id="sessionNext"></textarea>
+          </label>
+        </div>
+
+        <div class="card">
+          <div class="cardHeader">
+            <span>📄</span>
+            <h3>Informe automático editable</h3>
+          </div>
+
+          <button class="primaryBtn" onclick="generateReport()">Generar informe</button>
+
+          <textarea class="reportBox" id="reportBox" placeholder="Completa el formulario y presiona “Generar informe”."></textarea>
+
+          <div class="actions">
+            <button onclick="copyReport()">Copiar informe</button>
+            <button onclick="downloadReport()">Descargar TXT</button>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const AREAS = {
+      conducta: {
+        name: "Modificación de conducta",
+        icon: "🧩",
+        color: "#7c3aed",
+        fields: [
+          "Conducta objetivo",
+          "Frecuencia",
+          "Intensidad",
+          "Duración",
+          "Detonantes",
+          "Función probable de la conducta",
+          "Estrategias usadas",
+          "Conducta alternativa a enseñar"
+        ],
+        objectives: {
+          0: [
+            "Observar línea base de la conducta.",
+            "Identificar detonantes frecuentes.",
+            "Registrar frecuencia, intensidad y duración."
+          ],
+          1: [
+            "Reducir intensidad de la conducta con apoyo directo.",
+            "Aceptar una instrucción simple con apoyo.",
+            "Reconocer señales previas de desregulación."
+          ],
+          2: [
+            "Permanecer en actividad estructurada por periodos breves.",
+            "Esperar turnos con apoyo visual.",
+            "Usar una conducta alternativa para pedir ayuda o pausa."
+          ],
+          3: [
+            "Seguir instrucciones de dos pasos con menor apoyo.",
+            "Tolerar pequeñas demoras.",
+            "Usar estrategias de calma con guía del adulto."
+          ],
+          4: [
+            "Autorregularse ante frustraciones leves.",
+            "Generalizar conductas adaptativas en casa y colegio.",
+            "Elegir una conducta alternativa adecuada."
+          ]
+        }
+      },
+      lenguaje: {
+        name: "Terapia de lenguaje",
+        icon: "💬",
+        color: "#2563eb",
+        fields: [
+          "Tipo de comunicación actual",
+          "Comprensión de instrucciones",
+          "Expresión de necesidades",
+          "Vocabulario funcional",
+          "Respuesta al nombre",
+          "Intención comunicativa",
+          "Comunicación espontánea",
+          "Turnos conversacionales"
+        ],
+        objectives: {
+          0: [
+            "Observar la forma actual de comunicación.",
+            "Registrar si usa llanto, gesto, mirada, palabra o pictograma.",
+            "Identificar apoyos comunicativos efectivos."
+          ],
+          1: [
+            "Responder al nombre con apoyo.",
+            "Imitar sonidos, gestos o movimientos simples.",
+            "Comunicar necesidades mediante gesto, señalamiento o pictograma."
+          ],
+          2: [
+            "Comprender instrucciones simples de un paso.",
+            "Solicitar ayuda, descanso u objeto deseado.",
+            "Aumentar vocabulario funcional."
+          ],
+          3: [
+            "Seguir instrucciones de dos pasos.",
+            "Usar frases cortas para expresar necesidades.",
+            "Participar en turnos comunicativos breves."
+          ],
+          4: [
+            "Mantener intercambios conversacionales simples.",
+            "Expresar emociones, ideas y experiencias.",
+            "Generalizar habilidades comunicativas en casa y colegio."
+          ]
+        }
+      },
+      cognitiva: {
+        name: "Terapia cognitiva",
+        icon: "🧠",
+        color: "#0891b2",
+        fields: [
+          "Atención sostenida",
+          "Atención conjunta",
+          "Memoria de trabajo",
+          "Seguimiento de consignas",
+          "Flexibilidad cognitiva",
+          "Resolución de problemas",
+          "Reconocimiento emocional",
+          "Tolerancia al error"
+        ],
+        objectives: {
+          0: [
+            "Observar nivel de atención y respuesta a consignas.",
+            "Identificar estilo de aprendizaje.",
+            "Registrar apoyos que facilitan la participación."
+          ],
+          1: [
+            "Mantener atención en una actividad breve.",
+            "Responder a consignas simples.",
+            "Reconocer emociones básicas en imágenes."
+          ],
+          2: [
+            "Seguir secuencias simples.",
+            "Clasificar objetos por color, forma o categoría.",
+            "Identificar causa y consecuencia."
+          ],
+          3: [
+            "Mantener atención durante tareas estructuradas.",
+            "Resolver problemas simples con apoyo visual.",
+            "Aceptar cambios pequeños dentro de una actividad."
+          ],
+          4: [
+            "Planificar pasos para completar una tarea.",
+            "Usar estrategias ante errores o frustración.",
+            "Aplicar habilidades cognitivas en contextos cotidianos."
+          ]
+        }
+      },
+      ocupacional: {
+        name: "Terapia ocupacional",
+        icon: "✋",
+        color: "#db2777",
+        fields: [
+          "Perfil sensorial",
+          "Respuesta a sonidos",
+          "Respuesta a texturas",
+          "Respuesta al movimiento",
+          "Motricidad fina",
+          "Coordinación óculo-manual",
+          "Autonomía en rutinas",
+          "Nivel de independencia"
+        ],
+        objectives: {
+          0: [
+            "Observar perfil sensorial y nivel de autonomía.",
+            "Identificar estímulos que facilitan o dificultan la participación.",
+            "Registrar tolerancia a materiales y rutinas."
+          ],
+          1: [
+            "Tolerar estímulos sensoriales breves.",
+            "Explorar materiales con diferentes texturas.",
+            "Participar en actividades de motricidad fina con asistencia."
+          ],
+          2: [
+            "Mejorar agarre, pinza y manipulación de objetos.",
+            "Seguir rutinas simples con apoyo visual.",
+            "Participar en juegos funcionales estructurados."
+          ],
+          3: [
+            "Realizar vestido, higiene o alimentación con menor apoyo.",
+            "Regularse mediante estrategias sensoriales enseñadas.",
+            "Mejorar coordinación óculo-manual."
+          ],
+          4: [
+            "Completar rutinas de autonomía con supervisión mínima.",
+            "Adaptarse a estímulos sensoriales cotidianos.",
+            "Generalizar independencia en casa y colegio."
+          ]
+        }
+      },
+      fisica: {
+        name: "Terapia física",
+        icon: "🏃",
+        color: "#ea580c",
+        fields: [
+          "Control postural",
+          "Tono muscular",
+          "Equilibrio",
+          "Coordinación bilateral",
+          "Marcha",
+          "Fuerza",
+          "Resistencia",
+          "Independencia motora"
+        ],
+        objectives: {
+          0: [
+            "Observar línea base motora.",
+            "Identificar apoyos físicos requeridos.",
+            "Registrar actividades motoras que evita o disfruta."
+          ],
+          1: [
+            "Mejorar control postural en actividades básicas.",
+            "Mantener equilibrio con apoyo.",
+            "Participar en ejercicios motores simples con guía."
+          ],
+          2: [
+            "Mejorar coordinación bilateral.",
+            "Subir y bajar superficies bajas con apoyo.",
+            "Realizar desplazamientos simples con mayor seguridad."
+          ],
+          3: [
+            "Mantener equilibrio dinámico durante juegos motores.",
+            "Mejorar fuerza y resistencia funcional.",
+            "Coordinar movimientos en secuencias simples."
+          ],
+          4: [
+            "Ejecutar circuitos motores con menor asistencia.",
+            "Participar en juegos físicos grupales.",
+            "Generalizar habilidades motoras en casa, colegio y espacios recreativos."
+          ]
+        }
+      }
+    };
+
+    const LEVELS = {
+      0: "Línea base",
+      1: "Inicial",
+      2: "Básico",
+      3: "Intermedio",
+      4: "Avanzado"
+    };
+
+    let selectedArea = "conducta";
+    let selectedLevel = 1;
+
+    function el(id) {
+      return document.getElementById(id);
+    }
+
+    function renderAreaMenu() {
+      const menu = el("areaMenu");
+      menu.innerHTML = "";
+
+      Object.keys(AREAS).forEach((key) => {
+        const area = AREAS[key];
+        const btn = document.createElement("button");
+        btn.className = key === selectedArea ? "areaBtn active" : "areaBtn";
+        btn.innerHTML = `<span>${area.icon}</span> ${area.name}`;
+        btn.onclick = () => {
+          selectedArea = key;
+          renderAll();
+        };
+        menu.appendChild(btn);
+      });
+    }
+
+    function renderLevels() {
+      const box = el("levelButtons");
+      box.innerHTML = "";
+
+      Object.keys(LEVELS).forEach((key) => {
+        const btn = document.createElement("button");
+        btn.className = Number(key) === selectedLevel ? "level active" : "level";
+        btn.innerText = `${key} · ${LEVELS[key]}`;
+        btn.onclick = () => {
+          selectedLevel = Number(key);
+          renderAll();
+        };
+        box.appendChild(btn);
+      });
+    }
+
+    function renderAreaForm() {
+      const area = AREAS[selectedArea];
+      const form = el("areaForm");
+      form.innerHTML = "";
+
+      area.fields.forEach((field) => {
+        const label = document.createElement("label");
+        label.className = "field";
+        label.innerHTML = `
+          <span>${field}</span>
+          <textarea id="field_${field}"></textarea>
+        `;
+        form.appendChild(label);
+      });
+    }
+
+    function renderObjectives() {
+      const area = AREAS[selectedArea];
+      const list = el("objectiveList");
+      list.innerHTML = "";
+
+      area.objectives[selectedLevel].forEach((obj, index) => {
+        const div = document.createElement("div");
+        div.className = "objective";
+        div.innerHTML = `
+          <span>${index + 1}</span>
+          <p>${obj}</p>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function updateDashboardBars() {
+      const participation = el("participation").value;
+      const regulation = el("regulation").value;
+      const frustration = el("frustration").value;
+
+      el("participationLabel").innerText = participation;
+      el("regulationLabel").innerText = regulation;
+      el("frustrationLabel").innerText = frustration;
+
+      el("participationText").innerText = participation + "/10";
+      el("regulationText").innerText = regulation + "/10";
+      el("frustrationText").innerText = frustration + "/10";
+
+      el("participationBar").style.width = participation * 10 + "%";
+      el("regulationBar").style.width = regulation * 10 + "%";
+      el("frustrationBar").style.width = frustration * 10 + "%";
+    }
+
+    function renderAll() {
+      const area = AREAS[selectedArea];
+      const progress = Math.round(((selectedLevel + 1) / 5) * 100);
+
+      renderAreaMenu();
+      renderLevels();
+      renderAreaForm();
+      renderObjectives();
+
+      el("activeAreaName").innerText = `${area.icon} ${area.name}`;
+      el("activeAreaName").style.color = area.color;
+      el("activeLevelName").innerText = `Nivel: ${LEVELS[selectedLevel]}`;
+      el("currentLevelText").innerText = LEVELS[selectedLevel];
+      el("progressText").innerText = progress + "%";
+      el("progressFill").style.width = progress + "%";
+      el("progressFill").style.background = area.color;
+
+      el("formAreaIcon").innerText = area.icon;
+      el("formAreaTitle").innerText = "Formulario: " + area.name;
+
+      updateDashboardBars();
+    }
+
+    function getValue(id) {
+      return el(id)?.value || "No especificado";
+    }
+
+    function generateReport() {
+      const area = AREAS[selectedArea];
+      const progress = Math.round(((selectedLevel + 1) / 5) * 100);
+
+      let areaFields = area.fields.map((field) => {
+        const fieldElement = el("field_" + field);
+        return `- ${field}: ${fieldElement?.value || "No especificado"}`;
+      }).join("\n");
+
+      let objectives = area.objectives[selectedLevel].map((obj) => {
+        return `- ${obj}`;
+      }).join("\n");
+
+      const report = `
+INFORME TERAPÉUTICO EDITABLE
+
+Datos generales:
+Paciente: ${getValue("childName")}
+Edad: ${getValue("childAge")}
+Grado escolar: ${getValue("childGrade")}
+Motivo de consulta: ${getValue("childReason")}
+Diagnóstico previo: ${getValue("childDiagnosis")}
+
+Área trabajada:
+${area.name}
+
+Nivel actual:
+${LEVELS[selectedLevel]}
+
+Porcentaje estimado de avance:
+${progress}%
+
+Fortalezas observadas:
+${getValue("childStrengths")}
+
+Necesidades de apoyo:
+${getValue("childNeeds")}
+
+Formulario del área:
+${areaFields}
+
+Objetivos sugeridos según el nivel actual:
+${objectives}
+
+Registro de sesión:
+Fecha: ${getValue("sessionDate")}
+Objetivo de sesión: ${getValue("sessionObjective")}
+Actividades realizadas: ${getValue("sessionActivities")}
+Participación: ${getValue("participation")}/10
+Regulación: ${getValue("regulation")}/10
+Tolerancia a la frustración: ${getValue("frustration")}/10
+
+Observaciones clínicas:
+${getValue("sessionObservations")}
+
+Recomendaciones para casa:
+${getValue("sessionHome")}
+
+Recomendaciones para colegio:
+${getValue("sessionSchool")}
+
+Próximo objetivo:
+${getValue("sessionNext")}
+
+Nota ética:
+Este informe es un borrador generado a partir de la información ingresada por el profesional. Debe ser revisado, editado y validado por el profesional responsable. No reemplaza evaluación clínica, diagnóstico ni juicio profesional.
+      `.trim();
+
+      el("reportBox").value = report;
+    }
+
+    function copyReport() {
+      const report = el("reportBox").value;
+      navigator.clipboard.writeText(report);
+      alert("Informe copiado");
+    }
+
+    function downloadReport() {
+      const report = el("reportBox").value;
+      const blob = new Blob([report], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "informe-neurokids.txt";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    document.addEventListener("input", function(event) {
+      if (
+        event.target.id === "participation" ||
+        event.target.id === "regulation" ||
+        event.target.id === "frustration"
+      ) {
+        updateDashboardBars();
+      }
+    });
+
+    renderAll();
+  </script>
+</body>
 </html>
